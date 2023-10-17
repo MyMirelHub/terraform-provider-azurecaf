@@ -4,21 +4,10 @@
         "min_length": 1,
         "max_length": 63,
         "validation_regex": "\"^[a-zA-Z0-9][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9]$\"",
-        "scope": "resourceGroup",
+        "scope": "global",
         "slug": "gke",
         "dashes": true,
         "lowercase": false,
         "regex": "\"[^0-9A-Za-z_-]\""
-    },
-    {
-        "name": "azurerm_resource_group",
-        "min_length": 1,
-        "max_length": 90,
-        "validation_regex": "\"^[a-zA-Z0-9-._\\\\(\\\\)]{0,89}[a-zA-Z0-9-_\\\\(\\\\)]$\"",
-        "scope": "subscription",
-        "slug": "rg",
-        "dashes": true,
-        "lowercase": false,
-        "regex": "`[^a-zA-Z0-9-._\\\\(\\\\)]`"
     }
 ]

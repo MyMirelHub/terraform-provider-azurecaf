@@ -19,46 +19,6 @@ func setData(prefixes []string, name string, suffixes []string, cleanInput bool)
 	return data
 }
 
-func TestCleanInput_no_changes(t *testing.T) {
-	data := "testdata"
-	resource := ResourceDefinitions["azurerm_resource_group"]
-	result := cleanString(data, &resource)
-	if data != result {
-		t.Errorf("Expected %s but received %s", data, result)
-	}
-}
-
-func TestCleanInput_remove_always(t *testing.T) {
-	data := "🐱‍🚀testdata😊"
-	expected := "testdata"
-	resource := ResourceDefinitions["azurerm_resource_group"]
-	result := cleanString(data, &resource)
-	if result != expected {
-		t.Errorf("Expected %s but received %s", expected, result)
-	}
-}
-
-func TestCleanInput_not_remove_special_allowed_chars(t *testing.T) {
-	data := "testdata()"
-	expected := "testdata()"
-	resource := ResourceDefinitions["azurerm_resource_group"]
-	result := cleanString(data, &resource)
-	if result != expected {
-		t.Errorf("Expected %s but received %s", expected, result)
-	}
-}
-
-func TestCleanSplice_no_changes(t *testing.T) {
-	data := []string{"testdata", "test", "data"}
-	resource := ResourceDefinitions["azurerm_resource_group"]
-	result := cleanSlice(data, &resource)
-	for i := range data {
-		if data[i] != result[i] {
-			t.Errorf("Expected %s but received %s", data[i], result[i])
-		}
-	}
-}
-
 func TestConcatenateParameters_azurerm_public_ip_prefix(t *testing.T) {
 	prefixes := []string{"pre"}
 	suffixes := []string{"suf"}
@@ -66,16 +26,6 @@ func TestConcatenateParameters_azurerm_public_ip_prefix(t *testing.T) {
 	separator := "-"
 	expected := "pre-name-ip-suf"
 	result := concatenateParameters(separator, prefixes, content, suffixes)
-	if result != expected {
-		t.Errorf("Expected %s but received %s", expected, result)
-	}
-}
-
-func TestGetSlug(t *testing.T) {
-	resourceType := "azurerm_resource_group"
-	convention := ConventionCafClassic
-	result := getSlug(resourceType, convention)
-	expected := "rg"
 	if result != expected {
 		t.Errorf("Expected %s but received %s", expected, result)
 	}
@@ -98,18 +48,6 @@ func TestAccResourceName_CafClassic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckResourceDestroy,
 		Steps: []resource.TestStep{
-			{
-				Config: testAccResourceNameCafClassicConfig,
-				Check: resource.ComposeTestCheckFunc(
-
-					testAccCafNamingValidation(
-						"azurecaf_name.classic_rg",
-						"pr1-pr2-rg-myrg-",
-						29,
-						"pr1-pr2"),
-					regexMatch("azurecaf_name.classic_rg", regexp.MustCompile(ResourceDefinitions["azurerm_resource_group"].ValidationRegExp), 1),
-				),
-			},
 			{
 				Config: testAccResourceNameCafClassicConfig,
 				Check: resource.ComposeTestCheckFunc(
@@ -186,36 +124,6 @@ func TestComposeEmptyStringArray(t *testing.T) {
 	}
 }
 
-func TestGetResourceNameValid(t *testing.T) {
-	namePrecedence := []string{"name", "slug", "random", "suffixes", "prefixes"}
-	resourceName, err := getResourceName("azurerm_resource_group", "-", []string{"a", "b"}, "myrg", nil, "1234", "cafclassic", true, false, true, namePrecedence)
-	expected := "a-b-rg-myrg-1234"
-
-	if err != nil {
-		t.Logf("getResource Name generated an error %s", err.Error())
-		t.Fail()
-	}
-	if expected != resourceName {
-		t.Logf("invalid name, expected %s got %s", expected, resourceName)
-		t.Fail()
-	}
-}
-
-func TestGetResourceNameValidNoSlug(t *testing.T) {
-	namePrecedence := []string{"name", "slug", "random", "suffixes", "prefixes"}
-	resourceName, err := getResourceName("azurerm_resource_group", "-", []string{"a", "b"}, "myrg", nil, "1234", "cafclassic", true, false, false, namePrecedence)
-	expected := "a-b-myrg-1234"
-
-	if err != nil {
-		t.Logf("getResource Name generated an error %s", err.Error())
-		t.Fail()
-	}
-	if expected != resourceName {
-		t.Logf("invalid name, expected %s got %s", expected, resourceName)
-		t.Fail()
-	}
-}
-
 func TestGetResourceNameInvalidResourceType(t *testing.T) {
 	namePrecedence := []string{"name", "slug", "random", "suffixes", "prefixes"}
 	resourceName, err := getResourceName("azurerm_invalid", "-", []string{"a", "b"}, "myrg", nil, "1234", "cafclassic", true, false, true, namePrecedence)
@@ -226,17 +134,6 @@ func TestGetResourceNameInvalidResourceType(t *testing.T) {
 		t.Fail()
 	}
 	if expected == resourceName {
-		t.Logf("valid name received while an error is expected")
-		t.Fail()
-	}
-}
-
-func TestGetResourceNamePassthrough(t *testing.T) {
-	namePrecedence := []string{"name", "slug", "random", "suffixes", "prefixes"}
-	resourceName, _ := getResourceName("azurerm_resource_group", "-", []string{"a", "b"}, "myrg", nil, "1234", "cafclassic", true, true, true, namePrecedence)
-	expected := "myrg"
-
-	if expected != resourceName {
 		t.Logf("valid name received while an error is expected")
 		t.Fail()
 	}
@@ -266,17 +163,6 @@ func TestResourceExampleInstanceStateUpgradeV2(t *testing.T) {
 
 const testAccResourceNameCafClassicConfig = `
 
-
-# Resource Group
-resource "azurecaf_name" "classic_rg" {
-    name            = "myrg"
-	resource_type   = "azurerm_resource_group"
-	prefixes        = ["pr1", "pr2"]
-	suffixes        = ["su1", "su2"]
-	random_seed     = 1
-	random_length   = 5
-	clean_input     = true
-}
 
 resource "azurecaf_name" "passthrough" {
     name            = "passthrough"
