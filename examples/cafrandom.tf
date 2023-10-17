@@ -170,12 +170,12 @@ resource "azurecaf_naming_convention" "gke" {
   resource_type = "gke"
 }
 
-output "aks_id" {
+output "gke_id" {
   value       = azurecaf_naming_convention.gke.id
   description = "Id of the resource's name"
 }
 
-output "aks_random" {
+output "gke_random" {
   value       = azurecaf_naming_convention.gke.result
   description = "Random result based on the resource type"
 }
