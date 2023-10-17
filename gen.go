@@ -85,18 +85,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Undocumented resource definitions
-	sourceDefinitionsUndocumented, err := ioutil.ReadFile(path.Join(wd, "resourceDefinition_out_of_docs.json"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	var dataUndocumented []ResourceStructure
-	err = json.Unmarshal(sourceDefinitionsUndocumented, &dataUndocumented)
-	if err != nil {
-		log.Fatal(err)
-	}
-	data = append(data, dataUndocumented...)
-
 	sort.SliceStable(data, func(i, j int) bool {
 		return data[i].ResourceTypeName < data[j].ResourceTypeName
 	})

@@ -115,104 +115,11 @@ func TestAccResourceName_CafClassic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 
 					testAccCafNamingValidation(
-						"azurecaf_name.classic_ca_invalid",
-						"ca-myinvalidcaname",
-						24,
-						""),
-					regexMatch("azurecaf_name.classic_ca_invalid", regexp.MustCompile(ResourceDefinitions["azurerm_container_app"].ValidationRegExp), 1),
-				),
-			},
-			{
-				Config: testAccResourceNameCafClassicConfig,
-				Check: resource.ComposeTestCheckFunc(
-
-					testAccCafNamingValidation(
 						"azurecaf_name.passthrough",
 						"passthrough",
 						11,
 						""),
-					regexMatch("azurecaf_name.passthrough", regexp.MustCompile(ResourceDefinitions["azurerm_container_app"].ValidationRegExp), 1),
-				),
-			},
-			{
-				Config: testAccResourceNameCafClassicConfig,
-				Check: resource.ComposeTestCheckFunc(
-
-					testAccCafNamingValidation(
-						"azurecaf_name.classic_cae_invalid",
-						"cae-myinvalidcaename",
-						26,
-						""),
-					regexMatch("azurecaf_name.classic_cae_invalid", regexp.MustCompile(ResourceDefinitions["azurerm_container_app_environment"].ValidationRegExp), 1),
-				),
-			},
-			{
-				Config: testAccResourceNameCafClassicConfig,
-				Check: resource.ComposeTestCheckFunc(
-
-					testAccCafNamingValidation(
-						"azurecaf_name.passthrough",
-						"passthrough",
-						11,
-						""),
-					regexMatch("azurecaf_name.passthrough", regexp.MustCompile(ResourceDefinitions["azurerm_container_app_environment"].ValidationRegExp), 1),
-				),
-			},
-			{
-				Config: testAccResourceNameCafClassicConfig,
-				Check: resource.ComposeTestCheckFunc(
-
-					testAccCafNamingValidation(
-						"azurecaf_name.classic_acr_invalid",
-						"pr1pr2crmyinvalidacrname",
-						35,
-						"pr1pr2"),
-					regexMatch("azurecaf_name.classic_acr_invalid", regexp.MustCompile(ResourceDefinitions["azurerm_container_registry"].ValidationRegExp), 1),
-				),
-			},
-			{
-				Config: testAccResourceNameCafClassicConfig,
-				Check: resource.ComposeTestCheckFunc(
-
-					testAccCafNamingValidation(
-						"azurecaf_name.passthrough",
-						"passthrough",
-						11,
-						""),
-					regexMatch("azurecaf_name.passthrough", regexp.MustCompile(ResourceDefinitions["azurerm_container_registry"].ValidationRegExp), 1),
-				),
-			},
-			{
-				Config: testAccResourceNameCafClassicConfig,
-				Check: resource.ComposeTestCheckFunc(
-
-					testAccCafNamingValidation(
-						"azurecaf_name.apim",
-						"vsic-apim-apim",
-						14,
-						"vsic"),
-					regexMatch("azurecaf_name.apim", regexp.MustCompile(ResourceDefinitions["azurerm_api_management_service"].ValidationRegExp), 1),
-				),
-			},
-		},
-	})
-}
-
-func TestAccResourceName_CafClassicRSV(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckResourceDestroy,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccResourceNameCafClassicConfigRsv,
-				Check: resource.ComposeTestCheckFunc(
-					testAccCafNamingValidation(
-						"azurecaf_name.rsv",
-						"pr1-rsv-test-gm-su1",
-						19,
-						""),
-					regexMatch("azurecaf_name.rsv", regexp.MustCompile(ResourceDefinitions["azurerm_recovery_services_vault"].ValidationRegExp), 1),
+					regexMatch("azurecaf_name.passthrough", regexp.MustCompile(ResourceDefinitions["gke_kubernetes_cluster"].ValidationRegExp), 1),
 				),
 			},
 		},
@@ -279,52 +186,10 @@ func TestComposeEmptyStringArray(t *testing.T) {
 	}
 }
 
-func TestValidResourceType_validParameters(t *testing.T) {
-	resourceType := "azurerm_resource_group"
-	resourceTypes := []string{"azurerm_container_registry", "azurerm_storage_account"}
-	isValid, err := validateResourceType(resourceType, resourceTypes)
-	if !isValid {
-		t.Logf("resource types considered invalid while input parameters are valid")
-		t.Fail()
-	}
-	if err != nil {
-		t.Logf("resource validation generated an unexpected error %s", err.Error())
-		t.Fail()
-	}
-}
-func TestValidResourceType_invalidParameters(t *testing.T) {
-	resourceType := "azurerm_resource_group"
-	resourceTypes := []string{"azurerm_not_supported", "azurerm_storage_account"}
-	isValid, err := validateResourceType(resourceType, resourceTypes)
-	if isValid {
-		t.Logf("resource types considered valid while input parameters are invalid")
-		t.Fail()
-	}
-	if err == nil {
-		t.Logf("resource validation did generate an error while the input is invalid")
-		t.Fail()
-	}
-}
-
 func TestGetResourceNameValid(t *testing.T) {
 	namePrecedence := []string{"name", "slug", "random", "suffixes", "prefixes"}
 	resourceName, err := getResourceName("azurerm_resource_group", "-", []string{"a", "b"}, "myrg", nil, "1234", "cafclassic", true, false, true, namePrecedence)
 	expected := "a-b-rg-myrg-1234"
-
-	if err != nil {
-		t.Logf("getResource Name generated an error %s", err.Error())
-		t.Fail()
-	}
-	if expected != resourceName {
-		t.Logf("invalid name, expected %s got %s", expected, resourceName)
-		t.Fail()
-	}
-}
-
-func TestGetResourceNameValidRsv(t *testing.T) {
-	namePrecedence := []string{"name", "slug", "random", "suffixes", "prefixes"}
-	resourceName, err := getResourceName("azurerm_recovery_services_vault", "-", []string{"a", "b"}, "test", nil, "1234", "cafclassic", true, false, true, namePrecedence)
-	expected := "a-b-rsv-test-1234"
 
 	if err != nil {
 		t.Logf("getResource Name generated an error %s", err.Error())
@@ -413,35 +278,9 @@ resource "azurecaf_name" "classic_rg" {
 	clean_input     = true
 }
 
-resource "azurecaf_name" "classic_ca_invalid" {
-    name            = "my_invalid_ca_name"
-	resource_type   = "azurerm_container_app"
-	random_seed     = 1
-	random_length   = 5
-	clean_input     = true
-}
-
-resource "azurecaf_name" "classic_cae_invalid" {
-    name            = "my_invalid_cae_name"
-	resource_type   = "azurerm_container_app_environment"
-	random_seed     = 1
-	random_length   = 5
-	clean_input     = true
-}
-
-resource "azurecaf_name" "classic_acr_invalid" {
-    name            = "my_invalid_acr_name"
-	resource_type   = "azurerm_container_registry"
-	prefixes        = ["pr1", "pr2"]
-	suffixes        = ["su1", "su2"]
-	random_seed     = 1
-	random_length   = 5
-	clean_input     = true
-}
-
 resource "azurecaf_name" "passthrough" {
-    name            = "passthRough"
-	resource_type   = "azurerm_container_registry"
+    name            = "passthrough"
+	resource_type   = "gke_kubernetes_cluster"
 	prefixes        = ["pr1", "pr2"]
 	suffixes        = ["su1", "su2"]
 	random_seed     = 1
@@ -450,30 +289,4 @@ resource "azurecaf_name" "passthrough" {
 	passthrough     = true
 }
 
-
-resource "azurecaf_name" "apim" {
-	name = "apim"
-	resource_type = "azurerm_api_management_service"
-	prefixes = ["vsic"]
-	random_length = 0
-	clean_input = true
-	passthrough = false
-   }
-`
-
-const testAccResourceNameCafClassicConfigRsv = `
-
-
-# Resource Group
-
-resource "azurecaf_name" "rsv" {
-    name            = "test"
-	resource_type   = "azurerm_recovery_services_vault"
-	prefixes        = ["pr1"]
-	suffixes        = ["su1"]
-	random_length   = 2
-	random_seed     = 1
-	clean_input     = true
-	passthrough     = false
-}
 `
