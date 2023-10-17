@@ -4,7 +4,6 @@
         "min_length": 1,
         "max_length": 63,
         "validation_regex": "\"^[a-zA-Z0-9][a-zA-Z0-9-_]{0,61}[a-zA-Z0-9]$\"",
-        "scope": "global",
         "slug": "gke",
         "dashes": true,
         "lowercase": false,

@@ -52,8 +52,6 @@ type ResourceStructure struct {
 	ValidationRegExp string `json:"validatation_regex,omitempty"`
 	// can the resource include dashes
 	Dashes bool `json:"dashes"`
-	// The scope of this name where it needs to be unique
-	Scope string `json:"scope,omitempty"`
 }
 
 var (
@@ -82,9 +80,8 @@ func randSeq(length int, seed *int64) string {
 
 // Resources currently supported
 var Resources = map[string]ResourceStructure{
-	"gke": {"azure kubernetes service", "gke", 1, 63, false, alphanumhu, "^[0-9a-zA-Z][0-9A-Za-z_.-]{0,61}[0-9a-zA-Z]$", true, "resourceGroup"},
-	"gen": {"generic", "gen", 1, 24, false, alphanum, "^[0-9a-zA-Z]{1,24}$", true, "resourceGroup"},
-	"rg":  {"resource group", "rg", 1, 80, false, unicode, `^[-\w\._\(\)]{1,80}$`, true, "resourceGroup"},
+	"gke": {"azure kubernetes service", "gke", 1, 63, false, alphanumhu, "^[0-9a-zA-Z][0-9A-Za-z_.-]{0,61}[0-9a-zA-Z]$", true},
+	"gen": {"generic", "gen", 1, 24, false, alphanum, "^[0-9a-zA-Z]{1,24}$", true},
 }
 
 // ResourcesMapping enforcing new naming convention

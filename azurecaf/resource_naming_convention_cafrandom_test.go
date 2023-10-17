@@ -18,12 +18,6 @@ func TestAccCafNamingConventionCaf_Random(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 
 					testAccCafNamingValidation(
-						"azurecaf_naming_convention.rg",
-						"myrg",
-						Resources["rg"].MaxLength,
-						"(_124)"),
-					regexMatch("azurecaf_naming_convention.rg", regexp.MustCompile(Resources["rg"].ValidationRegExp), 1),
-					testAccCafNamingValidation(
 						"azurecaf_naming_convention.gke",
 						"kubedemo",
 						Resources["gke"].MaxLength,
@@ -36,14 +30,6 @@ func TestAccCafNamingConventionCaf_Random(t *testing.T) {
 }
 
 const testAccResourceCafRandomConfig = `
-
-# Resource Group
-resource "azurecaf_naming_convention" "rg" {
-    convention      = "cafrandom"
-    name            = "myrg"
-    prefix          = "(_124)"
-    resource_type   = "rg"
-}
 
 # Azure Kubernetes Service
 resource "azurecaf_naming_convention" "gke" {

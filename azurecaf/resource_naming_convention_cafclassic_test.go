@@ -17,12 +17,6 @@ func TestAccCafNamingConvention_Classic(t *testing.T) {
 				Config: testAccResourceCafClassicConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCafNamingValidation(
-						"azurecaf_naming_convention.classic_rg",
-						"myrg",
-						7,
-						"rg"),
-					regexMatch("azurecaf_naming_convention.classic_rg", regexp.MustCompile(Resources["rg"].ValidationRegExp), 1),
-					testAccCafNamingValidation(
 						"azurecaf_naming_convention.classic_aks",
 						"kubedemo",
 						12,
@@ -35,13 +29,6 @@ func TestAccCafNamingConvention_Classic(t *testing.T) {
 }
 
 const testAccResourceCafClassicConfig = `
-
-# Resource Group
-resource "azurecaf_naming_convention" "classic_rg" {
-    convention      = "cafclassic"
-    name            = "myrg"
-    resource_type   = "rg"
-}
 
 # Google Kubernetes Service
 resource "azurecaf_naming_convention" "classic_aks" {
