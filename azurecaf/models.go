@@ -88,5 +88,4 @@ var Resources = map[string]ResourceStructure{
 var ResourcesMapping = map[string]ResourceStructure{
 	"generic":                Resources["gen"],
 	"gke_kubernetes_cluster": Resources["gke"],
-	"azurerm_resource_group": Resources["rg"],
 }
