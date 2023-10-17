@@ -84,8 +84,6 @@ The following attributes are exported:
 ## Resource types
 
 We define resource types as per [naming-and-tagging](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/naming-and-tagging)
-The comprehensive list of resource type can be found [here](./docs/resources/azurecaf_name.md)
-
 
 ## Building the provider
 
@@ -133,28 +131,6 @@ to run the integration test
 ```
 make test
 ```
-
-## Related repositories
-
-| Repo                                                                                             | Description                                                |
-|--------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-| [caf-terraform-landingzones](https://github.com/azure/caf-terraform-landingzones)                | landing zones repo with sample and core documentations     |
-| [rover](https://github.com/aztfmod/rover)                                                        | devops toolset for operating landing zones                 |
-| [azure_caf_provider](https://github.com/aztfmod/terraform-provider-azurecaf)                     | custom provider for naming conventions                     |
-| [module](https://registry.terraform.io/modules/aztfmod)                                          | official CAF module available in the Terraform registry    |
-
-
-## Community
-
-Feel free to open an issue for feature or bug, or to submit a PR.
-
-In case you have any question, you can reach out to tf-landingzones at microsoft dot com.
-
-You can also reach us on [Gitter](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
-## Contributing
-
-information about contributing can be found at [CONTRIBUTING.md](.github/CONTRIBUTING.md)
 
 ## Resource Status
 
