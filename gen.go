@@ -39,8 +39,6 @@ type ResourceStructure struct {
 	ValidationRegExp string `json:"validation_regex,omitempty"`
 	// can the resource include dashes
 	Dashes bool `json:"dashes"`
-	// The scope of this name where it needs to be unique
-	Scope string `json:"scope,omitempty"`
 }
 
 type templateData struct {
@@ -84,18 +82,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Undocumented resource definitions
-	sourceDefinitionsUndocumented, err := ioutil.ReadFile(path.Join(wd, "resourceDefinition_out_of_docs.json"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	var dataUndocumented []ResourceStructure
-	err = json.Unmarshal(sourceDefinitionsUndocumented, &dataUndocumented)
-	if err != nil {
-		log.Fatal(err)
-	}
-	data = append(data, dataUndocumented...)
 
 	sort.SliceStable(data, func(i, j int) bool {
 		return data[i].ResourceTypeName < data[j].ResourceTypeName
